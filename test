@@ -1,1 +1,29 @@
  const CellTag: keyof JSX.IntrinsicElements = isHeader ? "th" : "td";
+
+  hasVisitedTablePage = false;
+const [isClickEnabled, setIsClickEnabled] = useState(true);
+const pathname = usePathname();
+
+useEffect(() => {
+  if (hasVisitedTablePage) {
+    setIsClickEnabled(false); // 🚫 disable on second visit
+  } else {
+    hasVisitedTablePage = true; // first visit
+    setIsClickEnabled(true);
+  }
+}, [pathname]);
+const handleClick = (id: number) => {
+  if (!isClickEnabled) return;
+  router.push(`/aproval/${id}`);
+};
+<td
+  className={`px-4 py-3 border-b border-gray-200
+    ${!isClickEnabled ? "pointer-events-none cursor-default" : ""}
+  `}
+>
+  {cell}
+</td>
+const visited = sessionStorage.getItem("visitedTable");
+
+if (visited) setIsClickEnabled(false);
+else sessionStorage.setItem("visitedTable", "true");
