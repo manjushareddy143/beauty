@@ -1,9 +1,8 @@
-import { useState } from "react";
+ import clsx from "clsx";
 
-// ─── Spinner ─────────────────────────────────────────────────────────────────
 const Spinner = ({ size }) => (
   <svg
-    className={`animate-spin ${size === "sm" ? "h-3.5 w-3.5" : "h-5 w-5"}`}
+    className={clsx("animate-spin", size === "sm" ? "h-3.5 w-3.5" : "h-5 w-5")}
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
@@ -13,7 +12,6 @@ const Spinner = ({ size }) => (
   </svg>
 );
 
-// ─── Size config ──────────────────────────────────────────────────────────────
 const sizes = {
   sm: {
     normal: "px-4 py-1.5 text-xs rounded-md",
@@ -27,7 +25,6 @@ const sizes = {
   },
 };
 
-// ─── Variant config ───────────────────────────────────────────────────────────
 const variants = {
   primary: {
     normal:
@@ -41,7 +38,6 @@ const variants = {
   },
 };
 
-// ─── Button Component ─────────────────────────────────────────────────────────
 const Button = ({
   variant = "primary",
   size = "md",
@@ -59,117 +55,20 @@ const Button = ({
   const sizeClass = loading ? sizeStyle.loading : sizeStyle.normal;
   const variantClass = loading ? variantStyle.loading : variantStyle.normal;
 
+  const content = loading ? <Spinner size={sizeStyle.spinner} /> : children;
+
   return (
     <button
-      className={`${base} ${sizeClass} ${variantClass}`}
+      type="button"
+      className={clsx(base, sizeClass, variantClass)}
       disabled={disabled || loading}
+      aria-busy={loading}
+      aria-disabled={disabled || loading}
       onClick={onClick}
     >
-      {loading ? <Spinner size={sizeStyle.spinner} /> : children}
+      {content}
     </button>
   );
 };
 
-// ─── Demo ─────────────────────────────────────────────────────────────────────
-const Row = ({ label, children }) => (
-  <div className="flex flex-col gap-2">
-    <span className="text-xs font-mono text-slate-400 uppercase tracking-widest">{label}</span>
-    <div className="flex gap-4 items-center flex-wrap">{children}</div>
-  </div>
-);
-
-const SectionTitle = ({ children }) => (
-  <div className="flex items-center gap-3 my-2">
-    <span className="text-slate-700 font-bold text-sm uppercase tracking-wide">{children}</span>
-    <div className="flex-1 h-px bg-slate-100" />
-  </div>
-);
-
-export default function App() {
-  const [loading, setLoading] = useState({
-    smP: false, smS: false,
-    mdP: false, mdS: false,
-  });
-
-  const trigger = (key) => {
-    setLoading((prev) => ({ ...prev, [key]: true }));
-    setTimeout(() => setLoading((prev) => ({ ...prev, [key]: false })), 2000);
-  };
-
-  return (
-    <div
-      className="min-h-screen flex items-center justify-center p-8"
-      style={{ background: "linear-gradient(135deg, #f0f4ff 0%, #fafafa 100%)" }}
-    >
-      <div className="bg-white rounded-2xl shadow-xl p-10 w-full max-w-lg border border-slate-100">
-
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-slate-800 tracking-tight" style={{ fontFamily: "Georgia, serif" }}>
-            Button Component
-          </h1>
-          <p className="text-slate-400 text-sm mt-1">
-            <code className="bg-slate-100 px-1 rounded">size="sm" | "md"</code> &nbsp;·&nbsp;
-            <code className="bg-slate-100 px-1 rounded">variant="primary" | "secondary"</code>
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-6">
-
-          {/* ── Small ── */}
-          <SectionTitle>Small (sm)</SectionTitle>
-
-          <Row label="Default">
-            <Button size="sm" variant="primary">Primary</Button>
-            <Button size="sm" variant="secondary">Secondary</Button>
-          </Row>
-
-          <Row label="Loading">
-            <Button size="sm" variant="primary" loading />
-            <Button size="sm" variant="secondary" loading />
-          </Row>
-
-          <Row label="Try it">
-            <Button size="sm" variant="primary" loading={loading.smP} onClick={() => trigger("smP")}>Primary</Button>
-            <Button size="sm" variant="secondary" loading={loading.smS} onClick={() => trigger("smS")}>Secondary</Button>
-          </Row>
-
-          <Row label="Disabled — grey for all">
-            <Button size="sm" variant="primary" disabled>Primary</Button>
-            <Button size="sm" variant="secondary" disabled>Secondary</Button>
-          </Row>
-
-          {/* ── Medium ── */}
-          <SectionTitle>Medium (md)</SectionTitle>
-
-          <Row label="Default">
-            <Button size="md" variant="primary">Primary</Button>
-            <Button size="md" variant="secondary">Secondary</Button>
-          </Row>
-
-          <Row label="Loading">
-            <Button size="md" variant="primary" loading />
-            <Button size="md" variant="secondary" loading />
-          </Row>
-
-          <Row label="Try it">
-            <Button size="md" variant="primary" loading={loading.mdP} onClick={() => trigger("mdP")}>Primary</Button>
-            <Button size="md" variant="secondary" loading={loading.mdS} onClick={() => trigger("mdS")}>Secondary</Button>
-          </Row>
-
-          <Row label="Disabled — grey for all">
-            <Button size="md" variant="primary" disabled>Primary</Button>
-            <Button size="md" variant="secondary" disabled>Secondary</Button>
-          </Row>
-        </div>
-
-        {/* Code snippet */}
-        <div className="mt-10 rounded-xl bg-slate-900 text-slate-300 text-xs font-mono p-5 leading-relaxed overflow-x-auto space-y-1">
-          <div className="text-slate-500 mb-2">{"// Disabled classes"}</div>
-          <div><span className="text-emerald-400">Primary disabled:</span> <span className="text-yellow-300">disabled:bg-slate-300 disabled:text-slate-500</span></div>
-          <div className="mt-1"><span className="text-emerald-400">Secondary disabled:</span> <span className="text-yellow-300">disabled:bg-slate-100 disabled:text-slate-400 disabled:border-slate-200</span></div>
-        </div>
-      </div>
-    </div>
-  );
-}
+export default Button;
