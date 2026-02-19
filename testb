@@ -1,7 +1,9 @@
  import React from "react";
 import clsx from "clsx";
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Types
+// ─────────────────────────────────────────────────────────────
 
 type ButtonSize = "sm" | "md";
 type ButtonVariant = "primary" | "secondary";
@@ -19,7 +21,9 @@ interface SpinnerProps {
   size: ButtonSize;
 }
 
-// ─── Spinner ─────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Spinner
+// ─────────────────────────────────────────────────────────────
 
 const Spinner: React.FC<SpinnerProps> = ({ size }) => (
   <svg
@@ -44,7 +48,16 @@ const Spinner: React.FC<SpinnerProps> = ({ size }) => (
   </svg>
 );
 
-// ─── Size config ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Shared Disabled Base Class
+// ─────────────────────────────────────────────────────────────
+
+const disabledBase =
+  "disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none";
+
+// ─────────────────────────────────────────────────────────────
+// Size Config
+// ─────────────────────────────────────────────────────────────
 
 const sizes: Record<
   ButtonSize,
@@ -62,7 +75,9 @@ const sizes: Record<
   },
 };
 
-// ─── Variant config ──────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Variant Config
+// ─────────────────────────────────────────────────────────────
 
 const variants: Record<
   ButtonVariant,
@@ -70,17 +85,19 @@ const variants: Record<
 > = {
   primary: {
     normal:
-      "bg-indigo-600 text-white hover:bg-indigo-500 active:bg-indigo-700 active:scale-95 focus:ring-indigo-500 disabled:bg-slate-300 disabled:text-slate-500 disabled:cursor-not-allowed",
-    loading: "bg-green-500 text-white focus:ring-green-400 cursor-not-allowed",
+      "bg-indigo-600 text-white hover:bg-indigo-500 active:bg-indigo-700 active:scale-95 focus:ring-indigo-500",
+    loading: "bg-green-500 text-white focus:ring-green-400",
   },
   secondary: {
     normal:
-      "bg-white text-indigo-700 border border-indigo-300 hover:bg-indigo-50 hover:border-indigo-400 active:bg-indigo-100 active:scale-95 focus:ring-indigo-400 disabled:bg-slate-100 disabled:text-slate-400 disabled:border-slate-200 disabled:cursor-not-allowed",
-    loading: "bg-red-500 text-white border-0 focus:ring-red-400 cursor-not-allowed",
+      "bg-white text-indigo-700 border border-indigo-300 hover:bg-indigo-50 hover:border-indigo-400 active:bg-indigo-100 active:scale-95 focus:ring-indigo-400",
+    loading: "bg-red-500 text-white border-0 focus:ring-red-400",
   },
 };
 
-// ─── Button Component ────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Button Component
+// ─────────────────────────────────────────────────────────────
 
 const Button: React.FC<ButtonProps> = ({
   variant = "primary",
@@ -91,7 +108,8 @@ const Button: React.FC<ButtonProps> = ({
   children,
 }) => {
   const base =
-    "inline-flex items-center justify-center gap-1.5 font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 select-none";
+    "inline-flex items-center justify-center gap-1.5 font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 select-none " +
+    disabledBase;
 
   const sizeStyle = sizes[size];
   const variantStyle = variants[variant];
