@@ -1,0 +1,21 @@
+import { NextRequest, NextResponse } from "next/server";
+
+type RouteContext = { params: { slug: string } };
+
+export async function GET(_req: NextRequest, { params }: RouteContext) {
+  return NextResponse.json({ message: "GET", slug: params.slug });
+}
+
+export async function POST(req: NextRequest, { params }: RouteContext) {
+  const body = await req.json();
+  return NextResponse.json({ message: "POST", slug: params.slug, data: body });
+}
+
+export async function PUT(req: NextRequest, { params }: RouteContext) {
+  const body = await req.json();
+  return NextResponse.json({ message: "PUT", slug: params.slug, data: body });
+}
+
+export async function DELETE(_req: NextRequest, { params }: RouteContext) {
+  return NextResponse.json({ message: "DELETE", slug: params.slug });
+}
