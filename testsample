@@ -1,9 +1,40 @@
-{
-  "name": "Apple MacBook Pro 16",
-  "data": {
-    "year": 2019,
-    "price": 1849.99,
-    "CPU model": "Intel Core i9",
-    "Hard disk size": "1 TB"
+ "use client";
+
+import { useEffect } from "react";
+import { PublicClientApplication } from "@azure/msal-browser";
+
+const msalInstance = new PublicClientApplication({
+  auth: {
+    clientId: process.env.NEXT_PUBLIC_CLIENT_ID,
+    authority: `https://login.microsoftonline.com/${process.env.NEXT_PUBLIC_TENANT_ID}`,
+    redirectUri: "http://localhost:3000"
   }
-} 
+});
+
+export default function Home() {
+
+  useEffect(() => {
+    async function getToken() {
+      const accounts = msalInstance.getAllAccounts();
+
+      if (accounts.length === 0) {
+        await msalInstance.loginPopup({
+          scopes: ["User.Read"]
+        });
+      }
+
+      const account = msalInstance.getAllAccounts()[0];
+
+      const response = await msalInstance.acquireTokenSilent({
+        account: account,
+        scopes: ["User.Read"]
+      });
+
+      console.log("Access Token:", response.accessToken);
+    }
+
+    getToken();
+  }, []);
+
+  return <div>Check console for token</div>;
+}
