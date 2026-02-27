@@ -37,4 +37,5 @@ export default function Home() {
   }, []);
 
   return <div>Check console for token</div>;
-}
+}  const searchParams = req.nextUrl.searchParams.toString();
+  const url = `https://jsonplaceholder.typicode.com/${slug}${searchParams ? `?${searchParams}` : ""}`;
